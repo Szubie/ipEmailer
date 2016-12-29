@@ -1,0 +1,1 @@
+Your server's public IP address has changed to: CURRENT_IP
