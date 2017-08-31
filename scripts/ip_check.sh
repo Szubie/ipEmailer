@@ -1,14 +1,16 @@
 #!/bin/bash
 
+. inet_check.sh
+
 old_ip=$(cat ~/.ipEmailer/public_ip.txt)
 current_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 #Check Internet connection first
-inet=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo Online || echo Offline)
+online=is_online
 
-if [[ $inet == 'Online' ]]; then echo $inet;
+if [[ $online -eq 'true' ]]; then echo "Online";
     if [[ $old_ip != $current_ip ]]; then
-        readarray -t recipients < /opt/ipEmailer/config/email/emailDestination.config
+        readarray -t recipients < ~/.ipEmailer/config/email/emailDestination.config
         for recipient in ${recipients[@]}; do
             echo "$(sed "s/CURRENT_IP/$current_ip/g" ~/.ipEmailer/config/email/emailText.txt)" | mail -s "$(sed "s/CURRENT_IP/$current_ip/g" ~/.ipEmailer/config/email/emailTitle.txt)" $recipient
         done
@@ -17,4 +19,3 @@ if [[ $inet == 'Online' ]]; then echo $inet;
     else echo "IP unchanged"
     fi
 fi
-

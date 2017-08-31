@@ -5,6 +5,7 @@ chmod +x scripts/*
 # Create local folder
 mkdir ~/.ipEmailer
 cp scripts/ip_check.sh ~/.ipEmailer
+cp scripts/inet_check.sh ~/.ipEmailer
 cp config/public_ip.txt ~/.ipEmailer
 cp -r config ~/.ipEmailer
 
